@@ -2,6 +2,8 @@
   "name": "express",
   "version": "0.0.1",
   "scripts": {
+    "postinstall": "prisma generate",
+    "bnuild": "prisma generate && tsc",
     "dev": "nodemon index.ts"
   },
   "devDependencies": {
