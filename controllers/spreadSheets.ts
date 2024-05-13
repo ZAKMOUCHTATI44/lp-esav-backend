@@ -5,6 +5,7 @@ import process from 'process';
 import { authenticate } from '@google-cloud/local-auth';
 import { google } from 'googleapis';
 import { BaseExternalAccountClient, GoogleAuth, OAuth2Client } from "google-auth-library";
+import prisma from "../prisma/prisma";
 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const TOKEN_PATH = path.join(process.cwd(), 'token.json');
