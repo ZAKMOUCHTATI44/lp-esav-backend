@@ -54,7 +54,7 @@ export async function addLeadToSpreadSheets(auth  : string | BaseExternalAccount
     let values = [
         [
 
-            lead.civility,
+            lead.civility  + "APP",
             lead.firstName,
             lead.lastName,
             lead.email,
@@ -78,15 +78,18 @@ export async function addLeadToSpreadSheets(auth  : string | BaseExternalAccount
             valueInputOption: 'RAW',
             requestBody : resource,
         },
-        (err, result) => {
+        async (err, result) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log(
-                    '%d cells updated on range: %s',
-                    result.data.updates.updatedCells,
-                    result.data.updates.updatedRange
-                );
+               prisma.lead.update({
+                    where:{
+                        id: lead.id
+                    },
+                    data : {
+                        sheetId : result.data.updates.updatedRange
+                    }
+                })
             }
         }
     );

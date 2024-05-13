@@ -39,7 +39,13 @@ export async function createLead(req: Request, res: Response) {
     },
   });
 
-  authorize().then((auth ) =>  writeData(auth , lead )).catch(console.error);
+  try {
+    const auth =await authorize();
+    writeData(auth , lead )
+  } catch (error) {
+    
+  }
+
   res.json(lead);
 }
 

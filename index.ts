@@ -7,6 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors())
 
+
 // root routes
 app.get("/", async (req: Request, res: Response) => {
   res.status(200).json({ message: "HELLO WORLxsaasD" });
@@ -15,12 +16,21 @@ app.get("/", async (req: Request, res: Response) => {
 
 app.post("/spread-sheets" ,async (req: Request , res : Response ) => {
 
-  const lead = await prisma.lead.findFirst() 
+  const lead = await prisma.lead.findFirst({
+    where: {
+      id:"660624f8209f668f6c60df4d"
+    }
+  }) 
 
   console.log(lead)
 
+  try {
+    const auth =await authorize();
+    writeData(auth , lead )
+  } catch (error) {
+    
+  }
 
-  authorize().then((auth ) =>  writeData(auth , lead )).catch(console.error);
 
   res.send('HEY ')
 
