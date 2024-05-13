@@ -38,12 +38,17 @@ export async function createLead(req: Request, res: Response) {
     },
   });
 
-  res.json(lead)
+  res.json(lead);
 }
 
+export async function getLeads(req: Request, res: Response) {
+  const leads = await prisma.lead.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
-export async function getLeads(req:Request , res : Response) {
-    const leads = await prisma.lead.findMany() 
+  const count= await prisma.lead.count()
 
-    return res.json({leads})
+  return res.json({ count , leads });
 }
