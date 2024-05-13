@@ -54,14 +54,15 @@ export async function addLeadToSpreadSheets(auth  : string | BaseExternalAccount
     let values = [
         [
 
-            lead.id,
             lead.civility,
             lead.firstName,
             lead.lastName,
             lead.email,
             lead.phone,
+            lead.formation,
             lead.niveau,
-            lead.phone,
+            lead.programme,
+            lead.city,
             lead.createdAt,
             lead.updatedAt,
         ]
@@ -72,8 +73,8 @@ export async function addLeadToSpreadSheets(auth  : string | BaseExternalAccount
     };
     sheets.spreadsheets.values.append(
         {
-            spreadsheetId: '1D4Y9xxKhIazoAOXT45ZV4j_NeH_ja6jYiTFVfOmfpPA',
-            range: 'Feuille 2',
+            spreadsheetId: '1MClf3i_xpvQD-JVYDhmbgh3sMKiaHt4j-jbgBe4vGhQ',
+            range: 'Data',
             valueInputOption: 'RAW',
             requestBody : resource,
         },

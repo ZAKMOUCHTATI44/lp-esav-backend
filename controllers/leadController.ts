@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../prisma/prisma";
+import { authorize, writeData } from "./spreadSheets";
 
 export async function createLead(req: Request, res: Response) {
   let {
@@ -38,6 +39,7 @@ export async function createLead(req: Request, res: Response) {
     },
   });
 
+  authorize().then((auth ) =>  writeData(auth , lead )).catch(console.error);
   res.json(lead);
 }
 
