@@ -3,6 +3,7 @@ import prisma from "./prisma/prisma";
 import { createLead, getLeads } from "./controllers/leadController";
 import cors from 'cors'
 import { authorize, writeData } from "./controllers/spreadSheets";
+import axios from "axios"
 const app = express();
 app.use(express.json());
 app.use(cors())
@@ -22,17 +23,20 @@ app.post("/spread-sheets" ,async (req: Request , res : Response ) => {
     }
   }) 
 
+
+  const apiCall = await axios.post("http://34.224.216.83/api/messages", {lead})
+
   console.log(lead)
 
-  try {
-    const auth =await authorize();
-    writeData(auth , lead )
-  } catch (error) {
+  // try {
+  //   const auth =await authorize();
+  //   writeData(auth , lead )
+  // } catch (error) {
     
-  }
+  // }
 
 
-  res.send('HEY ')
+  res.send(lead)
 
 })
 
