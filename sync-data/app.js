@@ -1,11 +1,16 @@
-import { Lead } from "@prisma/client";
-import fs from 'fs/promises';
-import path from 'path';
-import process from 'process';
-import { authenticate } from '@google-cloud/local-auth';
-import { google } from 'googleapis';
-import { BaseExternalAccountClient, GoogleAuth, OAuth2Client } from "google-auth-library";
-import prisma from "../prisma/prisma";
+const fs = require('fs').promises;
+const path = require('path');
+const process = require('process');
+const { authenticate } = require('@google-cloud/local-auth');
+const { google } = require('googleapis');
+
+
+
+const express = require('express');
+const app = express();
+const PORT = 3000;
+app.use(express.json());
+
 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const TOKEN_PATH = path.join(process.cwd(), 'token.json');
@@ -21,7 +26,7 @@ async function loadSavedCredentialsIfExist() {
     }
 }
 
-async function saveCredentials(client: any){
+async function saveCredentials(client){
     const content = await fs.readFile(CREDENTIALS_PATH, 'utf8');
     const keys = JSON.parse(content);
     const key = keys.installed || keys.web;
@@ -34,8 +39,8 @@ async function saveCredentials(client: any){
     await fs.writeFile(TOKEN_PATH, payload);
 }
 
-export async function authorize() {
-    let client : any  = await loadSavedCredentialsIfExist();
+ async function authorize() {
+    let client   = await loadSavedCredentialsIfExist();
     if (client) {
         return client;
     }
@@ -49,7 +54,26 @@ export async function authorize() {
     return client;
 }
 
-export async function addLeadToSpreadSheets(auth  : string | BaseExternalAccountClient | OAuth2Client , lead : Lead) {
+app.post('/api/messages',async (req, res) => {
+
+    const { lead } = req.body
+    const auth = await authorize()
+    addLeadToSpreadSheets(auth , lead )
+
+    res.send("app has been added")
+
+
+
+});
+
+// GET method to retrieve all messages
+app.get('/api/', (req, res) => {
+    res.json("healtz")
+});
+
+
+
+ async function addLeadToSpreadSheets( auth , lead ) {
 
     const sheets = google.sheets({ version: 'v4', auth });
     let values = [
@@ -83,23 +107,17 @@ export async function addLeadToSpreadSheets(auth  : string | BaseExternalAccount
             if (err) {
                 console.log(err);
             } else {
-               prisma.lead.update({
-                    where:{
-                        id: lead.id
-                    },
-                    data : {
-                        sheetId : result.data.updates.updatedRange
-                    }
-                })
+              console.log(`Sending => ${lead.email}` )
             }
         }
     );
 
 }
 
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 
-export function writeData(auth  : string | BaseExternalAccountClient | OAuth2Client , lead : Lead ) {
-    addLeadToSpreadSheets(auth,lead)
 
-}
 

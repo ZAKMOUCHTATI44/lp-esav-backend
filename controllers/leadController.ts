@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../prisma/prisma";
 import { authorize, writeData } from "./spreadSheets";
+import axios from "axios"
 
 export async function createLead(req: Request, res: Response) {
   let {
@@ -39,12 +40,7 @@ export async function createLead(req: Request, res: Response) {
     },
   });
 
-  try {
-    const auth =await authorize();
-    writeData(auth , lead )
-  } catch (error) {
-    
-  }
+  const apiCall = await axios.post("http://34.224.216.83/api/messages", {lead})
 
   res.json(lead);
 }
