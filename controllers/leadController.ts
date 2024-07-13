@@ -40,7 +40,7 @@ export async function createLead(req: Request, res: Response) {
     },
   });
 
-  const apiCall = await axios.post("http://34.224.216.83/api/messages", {lead})
+  const apiCall = await axios.post("http://57.129.51.21:3000/api/messages", {lead})
 
   res.json(lead);
 }

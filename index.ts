@@ -41,7 +41,7 @@ app.post("/spread-sheets" ,async (req: Request , res : Response ) => {
 
 })
 
-app.get("/leads", getLeads);
+app.get("/leads-secertduagdad", getLeads);
 
 app.post("/leads", createLead);
 
