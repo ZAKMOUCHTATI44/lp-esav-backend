@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import prisma from "../prisma/prisma";
 import { authorize, writeData } from "./spreadSheets";
 import axios from "axios"
+require('dotenv').config()
+
+
 
 export async function createLead(req: Request, res: Response) {
   let {
@@ -56,7 +59,7 @@ export async function createLead(req: Request, res: Response) {
 
   const apiCall = await axios.post("https://api.hubapi.com/crm/v3/objects/contacts", JSON.stringify(data), {
     headers: {
-      Authorization: `Bearer pat-eu1-d13bc29c-6e58-491a-9ee0-aa0fcf3eba7a`,
+      Authorization: `Bearer ${process.env.HUBSPOT_ACCESS_TOKEN}`,
     },
   });
 
