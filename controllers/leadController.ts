@@ -40,7 +40,29 @@ export async function createLead(req: Request, res: Response) {
     },
   });
 
-  const apiCall = await axios.post("http://51.75.89.50:3000/api/messages", {lead})
+
+  const data = {
+    properties: {
+      firstname: lead.firstName,
+      lastname: lead.lastName,
+      email: lead.email,
+      phone: lead.phone,
+      formation: lead.formation,
+      niveau: lead.niveau,
+      programme: lead.programme,
+      city: lead.city
+    }
+  }
+
+  const apiCall = await axios.post("https://api.hubapi.com/crm/v3/objects/contacts", JSON.stringify(data), {
+    headers: {
+      Authorization: `Bearer pat-eu1-d13bc29c-6e58-491a-9ee0-aa0fcf3eba7a`,
+    },
+  });
+
+  console.log(apiCall)
+
+  // const apiCall = await axios.post("http://51.75.89.50:3000/api/messages", {lead})
 
   res.json(lead);
 }
@@ -52,7 +74,7 @@ export async function getLeads(req: Request, res: Response) {
     },
   });
 
-  const count= await prisma.lead.count()
+  const count = await prisma.lead.count()
 
-  return res.json({ count , leads });
+  return res.json({ count, leads });
 }
