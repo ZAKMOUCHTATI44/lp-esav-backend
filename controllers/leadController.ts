@@ -57,13 +57,19 @@ export async function createLead(req: Request, res: Response) {
     }
   }
 
-  const apiCall = await axios.post("https://api.hubapi.com/crm/v3/objects/contacts", JSON.stringify(data), {
-    headers: {
-      Authorization: `Bearer ${process.env.HUBSPOT_ACCESS_TOKEN}`,
-    },
-  });
-
-  console.log(apiCall)
+  try {
+    
+    const apiCall = await axios.post("https://api.hubapi.com/crm/v3/objects/contacts", JSON.stringify(data), {
+      headers: {
+        Authorization: `Bearer ${process.env.HUBSPOT_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json'
+      },
+    });
+  
+    console.log(apiCall)
+  } catch (error) {
+    console.log("ALEADY HAS CONTACT")
+  }
 
   // const apiCall = await axios.post("http://51.75.89.50:3000/api/messages", {lead})
 
