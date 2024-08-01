@@ -52,7 +52,7 @@ export async function createLead(req: Request, res: Response) {
       phone: lead.phone,
       formation: lead.formation,
       niveau: lead.niveau,
-      programme: lead.programme,
+      options: lead.programme,
       city: lead.city
     }
   }
